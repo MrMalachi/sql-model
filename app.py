@@ -23,14 +23,37 @@ def create_heroes():
     hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
     hero_3 = Hero(name="Rusty Man", secret_name="Tommy Sharp", age=48)
 
-    session = Session(engine)
+    with Session(engine) as session:
+        session.add(hero_1)
+        session.add(hero_2)
+        session.add(hero_3)
 
-    session.add(hero_1)
-    session.add(hero_2)
-    session.add(hero_3)
+        print("After adding to the session")
+        print(f"Hero 1: {hero_1}")
+        print(f"Hero 2: {hero_2}")
+        print(f"Hero 3: {hero_3}")
 
-    session.commit()
+        session.commit()
 
+        print("After committing the session")
+        print(f"Hero 1: {hero_1}")
+        print(f"Hero 2: {hero_2}")
+        print(f"Hero 3: {hero_3}")
+
+        print("After committing the session, show IDs")
+        print(f"Hero 1: {hero_1.id}")
+        print(f"Hero 2: {hero_2.id}")
+        print(f"Hero 3: {hero_3.id}")
+
+        print("After committing the session, show names")
+        print(f"Hero 1: {hero_1.name}")
+        print(f"Hero 2: {hero_2.name}")
+        print(f"Hero 3: {hero_3.name}")
+
+
+def main():
+    create_db_and_tables()
+    create_heroes()
 
 if __name__ == "__main__":
-    create_db_and_tables()
+    main()
