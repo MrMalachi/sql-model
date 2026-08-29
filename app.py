@@ -50,6 +50,20 @@ def create_heroes():
         print(f"Hero 2: {hero_2.name}")
         print(f"Hero 3: {hero_3.name}")
 
+        session.refresh(hero_1)
+        session.refresh(hero_2)
+        session.refresh(hero_3)
+
+        print("After refreshing the heroes")
+        print(f"Hero 1: {hero_1}")
+        print(f"Hero 2: {hero_2}")
+        print(f"Hero 3: {hero_3}")
+
+    print("After the session closes")
+    print(f"Hero 1: {hero_1}")
+    print(f"Hero 2: {hero_2}")
+    print(f"Hero 3: {hero_3}")
+
 
 def main():
     create_db_and_tables()
