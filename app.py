@@ -1,4 +1,4 @@
-from sqlmodel import Field, Session, SQLModel, create_engine
+from sqlmodel import Field, Session, SQLModel, create_engine, col, select
 
 
 class Hero(SQLModel, table=True):
@@ -22,52 +22,34 @@ def create_heroes():
     hero_1 = Hero(name="Deadpond", secret_name="Dive Wilson")
     hero_2 = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
     hero_3 = Hero(name="Rusty Man", secret_name="Tommy Sharp", age=48)
+    hero_4 = Hero(name="Trantula", secret_name="Natalia Roman-on", age=32)
+    hero_5 = Hero(name="Black Lion", secret_name="Trevor Challa", age=35)
+    hero_6 = Hero(name="Dr. Weird", secret_name="Steve Weird", age=36)
+    hero_7 = Hero(name="Captain North America", secret_name="Esteban Rogelios", age=93)
 
     with Session(engine) as session:
         session.add(hero_1)
         session.add(hero_2)
         session.add(hero_3)
-
-        print("After adding to the session")
-        print(f"Hero 1: {hero_1}")
-        print(f"Hero 2: {hero_2}")
-        print(f"Hero 3: {hero_3}")
+        session.add(hero_4)
+        session.add(hero_5)
+        session.add(hero_6)
+        session.add(hero_7)
 
         session.commit()
 
-        print("After committing the session")
-        print(f"Hero 1: {hero_1}")
-        print(f"Hero 2: {hero_2}")
-        print(f"Hero 3: {hero_3}")
-
-        print("After committing the session, show IDs")
-        print(f"Hero 1: {hero_1.id}")
-        print(f"Hero 2: {hero_2.id}")
-        print(f"Hero 3: {hero_3.id}")
-
-        print("After committing the session, show names")
-        print(f"Hero 1: {hero_1.name}")
-        print(f"Hero 2: {hero_2.name}")
-        print(f"Hero 3: {hero_3.name}")
-
-        session.refresh(hero_1)
-        session.refresh(hero_2)
-        session.refresh(hero_3)
-
-        print("After refreshing the heroes")
-        print(f"Hero 1: {hero_1}")
-        print(f"Hero 2: {hero_2}")
-        print(f"Hero 3: {hero_3}")
-
-    print("After the session closes")
-    print(f"Hero 1: {hero_1}")
-    print(f"Hero 2: {hero_2}")
-    print(f"Hero 3: {hero_3}")
+def select_heroes():
+    with Session(engine) as session:
+        statement = select(Hero).where(col(Hero.age) >= 35)
+        results = session.exec(statement)
+        for hero in results:
+            print(hero)
 
 
 def main():
     create_db_and_tables()
     create_heroes()
+    select_heroes()
 
 if __name__ == "__main__":
     main()
